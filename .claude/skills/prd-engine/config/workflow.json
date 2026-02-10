@@ -31,7 +31,7 @@
       "0: sub-agents sonnet only + DOC_SOURCE via sub-agent",
       "1: structured questions (AskUserQuestionTool + YAML)",
       "2: modularity — 500 lines max + agent separation",
-      "3: continuous saving + checkpoint matrix",
+      "3: save at key points only (agent complete, epic complete, /compact, session end)",
       "4: zero open ends + examples table",
       "5: Plan Mode before significant tasks",
       "6: Cross-Review 7 checks",
@@ -71,16 +71,19 @@
     }
   },
   "saving": {
-    "strategy": "continuous",
-    "after_each_answer": true,
+    "strategy": "key_points_only",
+    "after_each_answer": false,
+    "note": "⛔ לא לשמור אחרי כל תשובה! רק בנקודות מפתח",
     "checkpoint_fields": ["epic", "agent", "question_number", "completed", "pending", "doc_source", "notes"],
     "saving_matrix": {
-      "significant_answer": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "single_answer": {"checkpoint": false, "epic_file": false, "prd_index": false, "note": "נשמר בזיכרון בלבד"},
       "agent_complete": {"checkpoint": true, "epic_file": true, "prd_index": false},
       "epic_100_percent": {"checkpoint": true, "epic_file": true, "prd_index": true},
-      "50_percent_context": {"checkpoint": true, "epic_file": true, "prd_index": false},
-      "pre_compact": {"checkpoint": true, "epic_file": false, "prd_index": false}
-    }
+      "compact_triggered": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "session_end": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "50_percent_context": {"checkpoint": true, "epic_file": true, "prd_index": false}
+    },
+    "save_triggers": ["agent_complete", "epic_complete", "/compact", "session_end", "50%_context"]
   },
   "sub_agents": {
     "model": "sonnet",
@@ -91,7 +94,26 @@
       {"scenario": "checking cross-epic links", "type": "Explore"},
       {"scenario": "cross-review analysis", "type": "general-purpose"}
     ],
-    "never_use_for": ["simple user questions", "continuing conversation"]
+    "never_use_for": ["simple user questions", "continuing conversation"],
+    "user_announcements": {
+      "required": true,
+      "before_template": "🔄 שולח סאב-אייג'נט ל{action}...",
+      "after_template": "✅ סאב-אייג'נט חזר: {summary}",
+      "examples": {
+        "session_scan": {
+          "before": "שולח סאב-אייג'נט לסרוק את כל קבצי המערכת...",
+          "after": "נמצאו {epics} epics, {lessons} שיעורים, {entities} entities"
+        },
+        "doc_source": {
+          "before": "שולח סאב-אייג'נט לקרוא את מסמך הדרישות...",
+          "after": "סיכום {lines} שורות, {stories} user stories זוהו"
+        },
+        "cross_review": {
+          "before": "שולח סאב-אייג'נט לבדוק עקביות בין הסוכנים...",
+          "after": "{gaps} פערים נמצאו, {resolved} נפתרו"
+        }
+      }
+    }
   },
   "quality": {
     "detail_level": "production",

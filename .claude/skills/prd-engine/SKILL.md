@@ -19,11 +19,13 @@ description: >
 ## פרוטוקול אתחול (SessionStart)
 1. **קרא checkpoint.json** (ישירות — קובץ קטן, ~200 tokens)
 2. **שלח סאב-אייג'נט** (subagent_type: "Explore", model: "sonnet"):
+   - **הודע למשתמש:** 🔄 "שולח סאב-אייג'נט לסרוק את כל קבצי המערכת..."
    - קרא: SKILL.md + כל rules/ + lessons.md + prd-index.json + כל קבצי epics/
    - אם יש doc_url ב-checkpoint → קרא את המסמך (WebFetch) לתפוס שינויים
    - החזר סיכום 60 שורות + כתוב session-init.json
+   - **כשחוזר:** ✅ "סאב-אייג'נט חזר: נמצאו X epics, Y שיעורים, Z entities"
 3. **הצג סטטוס למשתמש** + הצע: [המשך מאיפה שעצרנו] / [התחל epic חדש]
-4. **שמירה רציפה** — אחרי כל תשובה: checkpoint.json + epic file
+4. **שמירה בנקודות מפתח** — רק בסיום Agent/Epic/compact/Session (לא אחרי כל תשובה!)
 
 ## Workflow — סדר עבודה לכל Epic
 
@@ -91,7 +93,7 @@ description: >
 0. **סאב-אייגנטים** — Sonnet בלבד + DOC_SOURCE תמיד דרך סאב-אייגנט
 1. **שאלות מובנות** — AskUserQuestionTool + 🎯 השלכות + YAML format
 2. **מודולריות** — 500 שורות מקסימום + הפרדת agents
-3. **שמירה רציפה** — checkpoint אחרי כל תשובה + saving matrix
+3. **שמירה בנקודות מפתח** — checkpoint רק בסיום Agent/Epic/compact (לא כל תשובה!)
 4. **אפס קצוות פתוחים** — כל פרט מוגדר + דוגמאות ❌/✅
 5. **Plan Mode** — חובה לפני משימה משמעותית
 6. **Cross-Review חובה** — 7 בדיקות לפני כתיבה לקובץ
