@@ -1,0 +1,14 @@
+{
+  "product": null,
+  "language": null,
+  "doc_source": null,
+  "doc_url": null,
+  "last_saved": "2026-02-10T22:07:50Z",
+  "session_ended": true,
+  "current_epic": null,
+  "current_agent": null,
+  "question_number": 0,
+  "completed_epics": [],
+  "pending": null,
+  "notes": "Run setup.sh to initialize"
+}

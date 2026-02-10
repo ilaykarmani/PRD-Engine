@@ -1,0 +1,9 @@
+{
+  "product": null,
+  "language": null,
+  "created": null,
+  "epics": [],
+  "global_entities": [],
+  "features_completed": 0,
+  "export_instruction": "כל epic עם dev_ready:true מוכן לפיתוח. העתק את הקובץ לכלי הפיתוח שלך."
+}

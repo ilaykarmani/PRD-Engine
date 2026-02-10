@@ -1,0 +1,18 @@
+# Memory files are local per project
+# Uncomment if you don't want to track memory:
+# .claude/memory/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/
+
+# Temp files
+.fuse_hidden*
+*/.fuse_hidden*

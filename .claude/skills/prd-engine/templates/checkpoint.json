@@ -1,0 +1,14 @@
+{
+  "product": "[PRODUCT_NAME]",
+  "language": "[LANGUAGE]",
+  "doc_source": "[DOC_SOURCE]",
+  "doc_url": "[DOC_URL]",
+  "last_saved": null,
+  "session_ended": false,
+  "current_epic": null,
+  "current_agent": null,
+  "question_number": 0,
+  "completed_epics": [],
+  "pending": null,
+  "notes": null
+}

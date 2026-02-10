@@ -1,0 +1,107 @@
+{
+  "workflow": {
+    "name": "PRD-Engine",
+    "version": "2.1.0",
+    "description": "Multi-Agent PRD specification workflow — production level"
+  },
+  "agents": {
+    "order": ["product-manager", "architect", "frontend"],
+    "questions": {
+      "product-manager": 9,
+      "architect": 8,
+      "frontend": 12
+    },
+    "frontend_note": "Q0 (reference) + Q1-Q11 (11 questions) = 12 interactions",
+    "cross_review": true,
+    "cross_review_after": "all_agents_complete",
+    "cross_review_checks": [
+      "pm_user_stories_coverage",
+      "architect_technical_consistency",
+      "frontend_ui_api_coverage",
+      "analytics_events",
+      "seo_metadata",
+      "i18n_consistency",
+      "deferred_documentation"
+    ],
+    "cross_review_checks_count": 7
+  },
+  "iron_rules": {
+    "count": 18,
+    "list": [
+      "0: sub-agents sonnet only + DOC_SOURCE via sub-agent",
+      "1: structured questions (AskUserQuestionTool + YAML)",
+      "2: modularity — 500 lines max + agent separation",
+      "3: continuous saving + checkpoint matrix",
+      "4: zero open ends + examples table",
+      "5: Plan Mode before significant tasks",
+      "6: Cross-Review 7 checks",
+      "7: Sweet Spot (MVP/future/user decides)",
+      "8: Epics = dev-ready output",
+
+      "10: holistic flexibility — SKILL questions = starting point",
+      "11: self-improvement loop (lessons.md)",
+      "12: DOC_SOURCE read every session",
+      "13: PRD Context loading (prd-index.json)",
+      "14: hat switching protocol",
+      "15: Analytics Tracking (12+ events)",
+      "16: Design System required",
+      "17: Reflection at session end"
+    ]
+  },
+  "step_zero": {
+    "description": "קבלת קישור למסמך מקור",
+    "tool": "AskUserQuestionTool",
+    "options": ["יש קישור", "אין עדיין", "אפיון מאפס"],
+    "doc_source_rules": "READ-ONLY, read via sub-agent only, never in main context"
+  },
+  "output": {
+    "parts": ["A", "B", "C", "D"],
+    "part_a": "Business Requirements (PM) — 9 שאלות",
+    "part_b": "Technical Architecture (Architect) — 8 שאלות",
+    "part_c": "Frontend Specification (Frontend) — 11+prep שאלות",
+    "part_d": "Cross-Review — 7 בדיקות",
+    "additional": "Key Decisions (All Agents)"
+  },
+  "navigation": {
+    "commands": {
+      "continue": "המשך לשאלה/agent הבא",
+      "back": "חזור לתקן תשובה קודמת",
+      "summary": "הצג סיכום ביניים",
+      "skip": "דלג ל-agent הבא (לא מומלץ)"
+    }
+  },
+  "saving": {
+    "strategy": "continuous",
+    "after_each_answer": true,
+    "checkpoint_fields": ["epic", "agent", "question_number", "completed", "pending", "doc_source", "notes"],
+    "saving_matrix": {
+      "significant_answer": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "agent_complete": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "epic_100_percent": {"checkpoint": true, "epic_file": true, "prd_index": true},
+      "50_percent_context": {"checkpoint": true, "epic_file": true, "prd_index": false},
+      "pre_compact": {"checkpoint": true, "epic_file": false, "prd_index": false}
+    }
+  },
+  "sub_agents": {
+    "model": "sonnet",
+    "default_type": "Explore",
+    "mandatory_scenarios": [
+      {"scenario": "session start / after compact", "type": "Explore"},
+      {"scenario": "reading DOC_SOURCE", "type": "Explore"},
+      {"scenario": "checking cross-epic links", "type": "Explore"},
+      {"scenario": "cross-review analysis", "type": "general-purpose"}
+    ],
+    "never_use_for": ["simple user questions", "continuing conversation"]
+  },
+  "quality": {
+    "detail_level": "production",
+    "note": "כל Part חייב להיות ברמת פירוט מלאה — לא skeleton",
+    "min_analytics_events": 12,
+    "min_acceptance_criteria": 8,
+    "max_file_lines": 500,
+    "error_messages_bilingual": true,
+    "design_system_required": true,
+    "holistic_flexibility": true,
+    "plan_mode_required_for_significant_tasks": true
+  }
+}
